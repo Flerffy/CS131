@@ -1,0 +1,8 @@
+[
+{
+  "directory": "D:/CS131/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe   -std=c++17 -o CMakeFiles\\CS131.dir\\source\\main.cpp.obj -c D:\\CS131\\source\\main.cpp",
+  "file": "D:/CS131/source/main.cpp",
+  "output": "CMakeFiles/CS131.dir/source/main.cpp.obj"
+}
+]
