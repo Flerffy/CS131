@@ -54,10 +54,11 @@ int main()
     cout << setw(10) << "Length:" << setw(10) << "Count:" << endl;
     cout << setw(10) << "-------" << setw(10) << "------" << endl;
     // display the word count for each word length
-    for (int i = 1; i <= 9; i++)
+    for (int i = 1; i <= 8; i++)
     {
         cout << setw(10) << i << setw(10) << wordLengthCount[i] << endl;
     }
+    cout << setw(11) << "9+" << setw(9) << wordLengthCount[9] << endl; // display count for words of length 9 or more
 
     cout << "The number of words in the file is: " << wordCount << endl;
     fin.close();
