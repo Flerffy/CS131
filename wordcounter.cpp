@@ -11,7 +11,8 @@ int main()
     int wordCount = 0, wordLength = 0;
     string word, fileName;
 
-    
+    int wordLengthCount[21] = {0}; // Array to store the count of words of each length (assuming max word length is 20)
+
     ifstream fin; // create an ifstream object to read from the file
     
     // greet the user and ask for the file name
@@ -21,12 +22,13 @@ int main()
     cin >> fileName;
 
     fin.open(fileName);
-    if (!fin.is_open()) // check if file exists
+    while (!fin.is_open()) // check if file exists
     {
         cout << "Error opening file. Please make sure the file exists and try again." << endl;
         cin >> fileName; // ask for the file name again
         fin.open(fileName);
-    
+    }
+
     // display file name acceptable
     cout << "File name accepted: " << fileName << endl;
     cout << "Counting words in the file..." << endl;
@@ -39,7 +41,11 @@ int main()
 
         // calculate word length per word and sort them
         wordLength = word.length();
-  
+        if (wordLength >= 9)
+        {
+            wordLength = 9; // group all words of length 9 or more together
+        }
+        wordLengthCount[wordLength]++;
     }
 
     cout << setw(10) << "~Word Report for " << fileName << "~" << endl;
@@ -47,27 +53,15 @@ int main()
     // display two columns for Length and Count
     cout << setw(10) << "Length:" << setw(10) << "Count:" << endl;
     cout << setw(10) << "-------" << setw(10) << "------" << endl;
-    // display number of words with a length of 1
-    cout << setw(10) << wordLength << setw(10) << wordCount << endl;
-    // display number of words with a length of 2
-    cout << setw(10) << wordLength << setw(10) << wordCount << endl;
-    // display number of words with a length of 3
-    cout << setw(10) << wordLength << setw(10) << wordCount << endl;
-    // display number of words with a length of 4
-    cout << setw(10) << wordLength << setw(10) << wordCount << endl;
-    // display number of words with a length of 5
-    cout << setw(10) << wordLength << setw(10) << wordCount << endl;
-    // display number of words with a length of 6
-    cout << setw(10) << wordLength << setw(10) << wordCount << endl;
-    // display number of words with a length of 7
-    cout << setw(10) << wordLength << setw(10) << wordCount << endl;
-    // display number of words with a length of 8
-    cout << setw(10) << wordLength << setw(10) << wordCount << endl;
-
+    // display the word count for each word length
+    for (int i = 1; i <= 9; i++)
+    {
+        cout << setw(10) << i << setw(10) << wordLengthCount[i] << endl;
+    }
 
     cout << "The number of words in the file is: " << wordCount << endl;
     fin.close();
+    fin.clear();
 
     return 0;
-    }
 }
