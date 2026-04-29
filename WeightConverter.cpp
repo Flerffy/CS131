@@ -6,7 +6,7 @@
 // Description: This program asks the user for a weight in pounds and ounces.
 // It then converts the weight into kilograms and grams and displays the total weight
 // as Kilograms with remaining grams. It achieves this by using functions to perform
-// the conversions and output the results.
+// the conversions and output the results. Grams are rounded up to the nearest whole number.
 ////
 
 #include <iostream>
@@ -16,19 +16,16 @@ using namespace std;
 
 
 // CONSTANTS
-const double POUNDS_TO_OUNCES = 16.0, POUNDS_TO_GRAMS = 453.592, OUNCES_TO_GRAMS = 28.349, GRAMS_TO_OUNCES = 0.035, GRAMS_TO_KILOGRAMS = 0.001, POUNDS_TO_KILOGRAMS = 0.453;
+const double POUNDS_TO_OUNCES = 16.0, POUNDS_TO_GRAMS = 453.6, OUNCES_TO_GRAMS = 28.3495, GRAMS_TO_KILOGRAMS = 1000.0;
 
 int main()
 {
     // VARIABLES
-    int pounds, kilograms, ounces, grams, totalKilograms, totalGrams;
+    int pounds, kilograms, ounces, grams, totalGrams;
 
     // FUNCTION PROTOTYPES
     int promptAndGetInt(string prompt);
     int convertTotalGrams(int pounds, int ounces);
-    int convertTotalKilograms(int pounds, int ounces);
-    int convertToKilograms(int pounds, int ounces);
-    int convertToGrams(int pounds, int ounces);
     void outputResults(int pounds, int ounces);
 
     // INPUT
@@ -36,13 +33,23 @@ int main()
         ounces = promptAndGetInt("Enter weight in ounces: ");
 
     // PROCESSING
-        totalGrams = convertToGrams(pounds, ounces);
-        totalKilograms = convertToKilograms(pounds, ounces);
+        // Convert weight from imperial to grams
+        totalGrams = convertTotalGrams(pounds, ounces);
+
+        // Take grams and remove every 1000, adding 1 to int kilograms for every 1000 grams, then take the remaining grams and output that as well
+        kilograms = 0;
+        for (; totalGrams >= 1000; totalGrams -= 1000)
+        {
+            kilograms++;
+        }
+        
+        grams = totalGrams % 1000;
+
 
     // OUTPUT
         outputResults(pounds, ounces);
-        cout << "Kilograms: " << totalKilograms << " kg" << endl;
-        cout << "Grams: " << totalGrams << " g" << endl;
+        cout << "Kilograms: " << kilograms << " kg" << endl;
+        cout << "Grams: " << grams << " g" << endl;
 
 
     return 0;
@@ -57,19 +64,11 @@ int promptAndGetInt(string prompt) // Prompts the user for an integer and return
     return value;
 }
 
-int convertToKilograms(int pounds, int ounces) // Converts the weight in pounds and ounces to kilograms
+int convertTotalGrams(int pounds, int ounces) // Converts the weight in pounds and ounces into totalGrams and rounds up to the nearest whole number
 {
-    double convertedKilograms = (pounds * POUNDS_TO_KILOGRAMS) + (ounces * OUNCES_TO_GRAMS * GRAMS_TO_KILOGRAMS);
-    return static_cast<int>(convertedKilograms);
+    int totalGrams = static_cast<int>((pounds * POUNDS_TO_GRAMS) + (ounces * OUNCES_TO_GRAMS) + 0.5);
+    return totalGrams;
 }
-
-int convertToGrams(int pounds, int ounces) // Converts the weight in pounds and ounces to grams
-{
-    double convertedKilograms = (pounds * POUNDS_TO_KILOGRAMS) + (ounces * OUNCES_TO_GRAMS * GRAMS_TO_KILOGRAMS);
-    double convertedGrams = (static_cast<int>(convertedKilograms) * 1000) - (convertedKilograms * 1000);
-    return static_cast<int>(convertedGrams);
-}
-
 
 
 void outputResults(int pounds, int ounces) // Outputs the weight in pounds and ounces
@@ -83,8 +82,15 @@ void outputResults(int pounds, int ounces) // Outputs the weight in pounds and o
 // Test Outputs
 // Enter weight in pounds: 5
 // Enter weight in ounces: 4
-// Pounds: 5.00 lbs
-// Ounces: 4.00 oz
+// Pounds: 5 lbs
+// Ounces: 4 oz
 // Kilograms: 2 kg
-// Grams: 267 g
-////  
+// Grams: 381 g
+////
+// Enter weight in pounds: 13
+// Enter weight in ounces: 11
+// Pounds: 13 lbs 
+// Ounces: 11 oz
+// Kilograms: 6 kg
+// Grams: 209 g
+////
